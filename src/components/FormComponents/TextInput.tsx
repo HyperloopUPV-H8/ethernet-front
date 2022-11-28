@@ -5,11 +5,6 @@ type Props = {
   checkInput?: (input: string) => boolean;
 };
 
-// function handleChange(event: ChangeEvent<HTMLInputElement>) {
-//   checkInput(/**DATA STRING */);
-//   onChange(/**QUIZAS ACEPTA ALGO */);
-// }
-
 enum State {
   Empty,
   Valid,
