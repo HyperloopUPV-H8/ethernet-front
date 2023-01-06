@@ -1,18 +1,71 @@
 @use "sass:color";
 
 // COLORS
-$background-color: #dce3eb;
-$isle-color: #ffffff;
-$title-color: #45677d;
-$normal-text-color: #373c43;
-$alternate-text-color: #505868;
-$orange: #f28d30;
-$blue: #317ae7;
-$base-color: hsl(212, 27%, 55%);
+$light-colors: (
+    background: #dce3eb,
+    isle: #ffffff,
+    title: #45677d,
+    normal-text: #373c43,
+    alternate-text: #505868,
+    orange: #f28d30,
+    blue: #317ae7,
+);
 
-//DARK THEME
-$dark-isle-color: #404654;
-$dark-normal-text-color: #bec6d2;
+// TODO: Remove hardcoded colors from these places:
+// ReceiveTable Headers Background
+// Logger start and stop button
+// Form Text input valid and invalid
+// Form Button foreground color
+// Connection table item colors
+// ChartMenu Sidebar PacketItem background
+// ChartMenu ChartList background
+// * ChartMenu Chart SVG
+// * ChartMenu Legend LegendItem color
+// TransmitTable OrderHeader header-color
+
+// TODO: select corporate colors
+$corporate-colors: (
+    background: #dce3eb,
+    isle: #ffffff,
+    title: #45677d,
+    normal-text: #373c43,
+    alternate-text: #505868,
+    orange: #f28d30,
+    blue: #317ae7,
+);
+
+// TODO: select dark colors
+$dark-colors: (
+    background: #dce3eb,
+    isle: #ffffff,
+    title: #45677d,
+    normal-text: #373c43,
+    alternate-text: #505868,
+    orange: #f28d30,
+    blue: #317ae7,
+);
+
+
+:root {
+    @each $name,
+    $color in $light-colors {
+        --color-#{$name}: #{$color};
+    }
+}
+
+:root:has(#theme-picker-corporate:checked) {
+    @each $name,
+    $color in $corporate-colors {
+        --color-#{$name}: #{$color};
+    }
+}
+
+:root:has(#theme-picker-dark:checked) {
+    @each $name,
+    $color in $dark-colors {
+        --color-#{$name}: #{$color};
+    }
+}
 
 // FONTS
 //TODO: define fallbacks fonts in case some are not installed
@@ -107,6 +160,7 @@ $background-color-transition: background-color $normal-transition-time linear;
         0% {
             background-color: lightness($color, 18%);
         }
+
         20% {
             background-color: lightness($color, 0%);
         }
