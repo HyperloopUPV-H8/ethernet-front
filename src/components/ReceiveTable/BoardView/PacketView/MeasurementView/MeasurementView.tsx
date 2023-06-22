@@ -1,8 +1,5 @@
-import { RootState } from "store";
 import styles from "./MeasurementView.module.scss";
 import { Measurement, isNumericMeasurement } from "common";
-import { useContext, useLayoutEffect, useRef } from "react";
-import { TableContext } from "components/ReceiveTable/TableUpdater";
 import { useUpdater } from "./useUpdater";
 
 type Props = {

@@ -8,6 +8,10 @@ import { nanoid } from "nanoid";
 
 //TODO: make typed fetch function, from url you get response type
 
+const ORDERS_URL = import.meta.env.PROD
+    ? `http://${config.prodServer.ip}:${config.prodServer.port}/${config.paths.orderDescription}`
+    : `http://${config.devServer.ip}:${config.devServer.port}/${config.paths.orderDescription}`;
+
 export function useOrders() {
     const dispatch = useDispatch();
     const handler = useWsHandler();
@@ -16,9 +20,7 @@ export function useOrders() {
         const controller = new AbortController();
         const id = nanoid();
 
-        fetch(
-            `http://${config.server.ip}:${config.server.port}/${config.paths.orderDescription}`
-        )
+        fetch(ORDERS_URL)
             .then((res) => res.json())
             .then((descriptions: VehicleOrders) => {
                 dispatch(setOrders(descriptions));

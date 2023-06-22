@@ -8,7 +8,9 @@ import { config, Loader } from "common";
 import { SplashScreen } from "components/SplashScreen/SplashScreen";
 import { setWebSocketConnection } from "slices/connectionsSlice";
 
-const SERVER_URL = `${config.server.ip}:${config.server.port}/${config.paths.websocket}`;
+const SERVER_URL = import.meta.env.PROD
+    ? `${config.prodServer.ip}:${config.prodServer.port}/${config.paths.websocket}`
+    : `${config.devServer.ip}:${config.devServer.port}/${config.paths.websocket}`;
 
 function App() {
     const dispatch = useDispatch();
@@ -22,14 +24,16 @@ function App() {
                         () => dispatch(setWebSocketConnection(true)),
                         () => dispatch(setWebSocketConnection(false))
                     ),
-                    fetchBack(config.paths.podDataDescription).then(
-                        (adapter) => {
-                            dispatch(initPodData(adapter));
-                            dispatch(initMeasurements(adapter));
-                        }
-                    ),
+                    fetchBack(
+                        import.meta.env.PROD,
+                        config.paths.podDataDescription
+                    ).then((adapter) => {
+                        dispatch(initPodData(adapter));
+                        dispatch(initMeasurements(adapter));
+                    }),
                 ]}
                 LoadingView={<SplashScreen />}
+                FailureView={<div>Failure</div>}
             >
                 {([handler]) => (
                     <WsHandlerProvider handler={handler}>

@@ -1,11 +1,12 @@
 import {
+    ArrayDescription,
     BooleanDescription,
     EnumDescription,
     NumericDescription,
     OrderFieldDescription,
 } from "common";
 
-export type FormField = NumericField | BooleanField | EnumField;
+export type FormField = NumericField | BooleanField | EnumField | ArrayField;
 
 type AbstractFormField = {
     id: string;
@@ -26,6 +27,11 @@ export type BooleanField = AbstractFormField &
 export type EnumField = AbstractFormField &
     EnumDescription & {
         value: string;
+    };
+
+export type ArrayField = AbstractFormField &
+    ArrayDescription & {
+        value: any[];
     };
 
 export type Form = {
@@ -59,8 +65,10 @@ function getFormField(desc: OrderFieldDescription): FormField {
         return getNumericFormField(desc);
     } else if (desc.kind == "boolean") {
         return getBooleanFormField(desc);
-    } else {
+    } else if (desc.kind == "enum") {
         return getEnumFormField(desc);
+    } else {
+        return getArrayFormField(desc);
     }
 }
 
@@ -96,5 +104,17 @@ function getEnumFormField(desc: EnumDescription): EnumField {
         value: desc.options[0],
         isValid: true,
         isEnabled: true,
+    };
+}
+
+function getArrayFormField(desc: ArrayDescription): ArrayField {
+    return {
+        id: desc.id,
+        name: desc.name,
+        kind: desc.kind,
+        itemType: desc.itemType,
+        isEnabled: true,
+        isValid: true,
+        value: [],
     };
 }

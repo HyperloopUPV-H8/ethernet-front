@@ -5,11 +5,15 @@ import { NumericType } from "common";
 import { isNumberValid } from "./validation";
 import { NumericInput } from "components/FormComponents/NumericInput/NumericInput";
 import { FormField } from "../../form";
+import { ArrayInput } from "components/FormComponents/ArrayInput/ArrayInput";
 
 type Props = {
     name: string;
     field: FormField;
-    onChange: (newValue: boolean | string | number, isValid: boolean) => void;
+    onChange: (
+        newValue: boolean | string | number | any[],
+        isValid: boolean
+    ) => void;
     changeEnabled: (isEnabled: boolean) => void;
 };
 
@@ -49,17 +53,20 @@ export const Field = ({ name, field, onChange, changeEnabled }: Props) => {
                 <CheckBox
                     isRequired={field.isEnabled}
                     disabled={!field.isEnabled}
-                    onChange={(value: boolean) => {
-                        onChange(value, true);
-                    }}
+                    onChange={(value: boolean) => onChange(value, true)}
                 />
-            ) : (
+            ) : field.kind == "enum" ? (
                 <Dropdown
                     value={field.value as string}
                     options={field.options}
-                    onChange={(newValue) => {
-                        onChange(newValue, true);
-                    }}
+                    onChange={(newValue) => onChange(newValue, true)}
+                />
+            ) : (
+                <ArrayInput
+                    isValid={true}
+                    disabled={!field.isEnabled}
+                    itemType={field.itemType}
+                    onChange={(value) => onChange()}
                 />
             )}
 
